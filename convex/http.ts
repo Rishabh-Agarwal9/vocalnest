@@ -1,5 +1,3 @@
-// ===== reference links =====
-// https://www.convex.dev/templates (open the link and choose for clerk than you will get the github link mentioned below)
 
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { httpRouter } from "convex/server";
