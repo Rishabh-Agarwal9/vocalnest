@@ -10,7 +10,7 @@ import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import LoaderSpinner from './LoaderSpinner';
-// import { useAudio } from '@/providers/AudioProvider';
+import { useAudio } from '@/providers/AudioProvider';
 import { cn } from '@/lib/utils';
 
 const RightSidebar = () => {
@@ -18,10 +18,12 @@ const RightSidebar = () => {
   const topPodcasters = useQuery(api.users.getTopUserByPodcastCount);
   const router = useRouter();
 
-  // const { audio } = useAudio();
+  const { audio } = useAudio();
 
   return (
-    <section className={'right_sidebar'}>
+    <section className={cn('right_sidebar h-[calc(100vh-5px)]', {
+      'h-[calc(100vh-140px)]': audio?.audioUrl
+    })}>
       <SignedIn>
         <Link href={`/profile/${user?.id}`} className="flex gap-3 pb-12">
           <UserButton />
@@ -41,7 +43,7 @@ const RightSidebar = () => {
         <Carousel fansLikeDetail={topPodcasters!}/>
       </section>
       <section className="flex flex-col gap-8 pt-12">
-        <Header headerTitle="Top Podcastrs" />
+        <Header headerTitle="Top hosts" />
         <div className="flex flex-col gap-6">
           {topPodcasters?.slice(0, 3).map((podcaster) => (
             <div key={podcaster._id} className="flex cursor-pointer justify-between" onClick={() => router.push(`/profile/${podcaster.clerkId}`)}>
