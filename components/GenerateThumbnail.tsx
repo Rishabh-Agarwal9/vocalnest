@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, setImagePrompt }: GenerateThumbnailProps) => {
   const [isAiThumbnail, setIsAiThumbnail] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [isGenerated, setIsGenerated] = useState(false)
   const imageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -38,6 +39,7 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
       const imageUrl = await getImageUrl({ storageId });
       setImage(imageUrl!);
       setIsImageLoading(false);
+      setIsGenerated(true);
       toast({
         title: "Thumbnail generated successfully",
       })
@@ -49,10 +51,16 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
 
   const generateImage = async () => {
     try {
+      setIsImageLoading(true);
+      if(!imagePrompt){
+        throw new Error("Please Add a prompt")
+      }
       const response = await handleGenerateThumbnail({ prompt: imagePrompt });
       const blob = new Blob([response], { type: 'image/png' });
       handleImage(blob, `thumbnail-${uuidv4()}`);
     } catch (error) {
+      setIsImageLoading(false);
+
       console.log(error)
       toast({ title: 'Error generating thumbnail', variant: 'destructive'})
     }
@@ -113,16 +121,22 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
             />
           </div>
           <div className="w-full max-w-[200px]">
-          <Button type="submit" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generateImage}>
-            {isImageLoading ? (
+
+          {!isGenerated &&(
+            isImageLoading ? (
               <>
-                Generating
-                <Loader size={20} className="animate-spin ml-2" />
+                <span className='text-white-1'>Generating thumbnail</span>
+                <Loader size={20} className="animate-spin ml-2 text-white-1" />
               </>
             ) : (
-              'Generate'
+              <Button type="button" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generateImage}>
+                  Generate Thumbnail
+              </Button>
+            )
             )}
-          </Button>
+
+
+          
           </div>
         </div>
       ) : (

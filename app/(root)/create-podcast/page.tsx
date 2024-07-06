@@ -72,12 +72,12 @@ const CreatePodcast = () => {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
-      if(!audioUrl || !imageUrl || !voiceType) {
+      if(!audioUrl || !imageUrl) {
         toast({
           title: 'Please generate audio and image',
         })
         setIsSubmitting(false);
-        throw new Error('Please generate audio and image')
+        throw new Error('Please generate audio and upload image')
       }
 
       const podcast = await createPodcast({
@@ -99,7 +99,7 @@ const CreatePodcast = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: 'Error',
+        title: `${error}`,
         variant: 'destructive',
       })
       setIsSubmitting(false);

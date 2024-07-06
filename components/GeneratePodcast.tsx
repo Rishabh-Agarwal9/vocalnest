@@ -12,8 +12,8 @@ import { useToast } from "@/components/ui/use-toast"
 import { useUploadFiles } from '@xixixao/uploadstuff/react';
 
 const useGeneratePodcast = ({
-  setAudio, voiceType, voicePrompt, setAudioStorageId
-}: GeneratePodcastProps) => {
+  setAudio, voiceType, voicePrompt, setAudioStorageId, setIsGenerated
+}: any) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast()
 
@@ -28,9 +28,15 @@ const useGeneratePodcast = ({
     setIsGenerating(true);
     setAudio('');
 
-    if(!voicePrompt) {
+    if(!voiceType) {
       toast({
         title: "Please provide a voiceType to generate a podcast",
+      })
+      return setIsGenerating(false);
+    }
+    if(!voicePrompt) {
+      toast({
+        title: "Please provide a prompt to generate a podcast",
       })
       return setIsGenerating(false);
     }
@@ -53,6 +59,8 @@ const useGeneratePodcast = ({
       const audioUrl = await getAudioUrl({ storageId });
       setAudio(audioUrl!);
       setIsGenerating(false);
+      setIsGenerated(true);
+      
       toast({
         title: "Podcast generated successfully",
       })
@@ -71,7 +79,9 @@ const useGeneratePodcast = ({
 }
 
 const GeneratePodcast = (props: GeneratePodcastProps) => {
-  const { isGenerating, generatePodcast } = useGeneratePodcast(props);
+  const [isGenerated, setIsGenerated] = useState(false);
+  const { isGenerating, generatePodcast } = useGeneratePodcast({...props, setIsGenerated});
+
 
   return (
     <div>
@@ -80,6 +90,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           AI Prompt to generate Podcast
         </Label>
         <Textarea 
+          maxLength={4000}
           className="input-class font-light focus-visible:ring-offset-orange-1"
           placeholder='Provide text to generate audio'
           rows={5}
@@ -88,16 +99,21 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
         />
       </div>
       <div className="mt-5 w-full max-w-[200px]">
-      <Button type="submit" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generatePodcast}>
-        {isGenerating ? (
-          <>
-            Generating
-            <Loader size={20} className="animate-spin ml-2" />
-          </>
-        ) : (
-          'Generate'
-        )}
-      </Button>
+        
+      
+        {!isGenerated &&(
+          isGenerating ? (
+            <>
+              <span className='text-white-1'>Generating podcast audio</span>
+              <Loader size={20} className="animate-spin ml-2 text-white-1" />
+            </>
+          ) : (
+            <Button type="button" className="text-16 bg-orange-1 py-4 font-bold text-white-1" onClick={generatePodcast}>
+                Generate podcast
+            </Button>
+          )
+          )}
+        
       </div>
       {props.audio && (
         <audio 
