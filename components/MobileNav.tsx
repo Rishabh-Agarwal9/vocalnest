@@ -6,15 +6,21 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { SignedIn, SignedOut, useClerk } from '@clerk/nextjs';
 import { sidebarLinks } from "@/constants"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Button } from './ui/button';
+
+import { usePathname, useRouter } from 'next/navigation'
 
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const { signOut } = useClerk();
+  const router = useRouter();
+
 
   return (
     <section>
@@ -40,7 +46,35 @@ const MobileNav = () => {
                   <p>{label}</p>
                 </Link></SheetClose>
               })}
+              <SignedOut>
+              <div className="flex-center flex-col w-full pb-14 max-lg:px-4 lg:pr-8">
+                <Button asChild className="text-16 w-full bg-orange-1 font-extrabold">
+                  <Link href="/sign-in">Sign in</Link>
+                </Button>
+                <div className="flex items-center text-slate-400 mt-4">
+                  <Link href="https://github.com/Rishabh-Agarwal9/vocalnest" target="_blank" rel="noopener noreferrer" className="mr-2">
+                    <Image src="/icons/github.svg" width={20} height={20} alt="Github" />
+                  </Link>
+                  <span>Made by Rishabh</span>
+                </div>
+              </div>
+            </SignedOut>
+
+            <SignedIn>
+            <div className="flex-center flex-col w-full pb-14 max-lg:px-4 lg:pr-8">
+                <Button className="text-16 w-full bg-orange-1 font-extrabold" onClick={() => signOut(() => router.push('/'))}>
+                  Log Out
+                </Button> 
+                <div className="flex items-center text-slate-400 mt-4">
+                  <Link href="https://github.com/Rishabh-Agarwal9/vocalnest" target="_blank" rel="noopener noreferrer" className="mr-2">
+                    <Image src="/icons/github.svg" width={20} height={20} alt="Github" />
+                  </Link>
+                  <span>Made by Rishabh</span>
+                </div>
+              </div>
+            </SignedIn>
               </nav>
+              
             </SheetClose>
           </div>
         </SheetContent>

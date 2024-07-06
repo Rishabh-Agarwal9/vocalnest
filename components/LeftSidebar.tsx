@@ -38,21 +38,34 @@ const LeftSidebar = () => {
         })}
       </nav>  
       <SignedOut>
-        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+        <div className="flex-center flex-col w-full pb-14 max-lg:px-4 lg:pr-8">
           <Button asChild className="text-16 w-full bg-orange-1 font-extrabold">
             <Link href="/sign-in">Sign in</Link>
           </Button>
+          <div className="flex items-center text-slate-400 mt-4">
+            <Link href="https://github.com/Rishabh-Agarwal9/vocalnest" target="_blank" rel="noopener noreferrer" className="mr-2">
+              <Image src="/icons/github.svg" width={20} height={20} alt="Github" />
+            </Link>
+            <span>Made by Rishabh</span>
+          </div>
         </div>
       </SignedOut>
+
       <SignedIn>
-        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+      <div className="flex-center flex-col w-full pb-14 max-lg:px-4 lg:pr-8">
           <Button className="text-16 w-full bg-orange-1 font-extrabold" onClick={() => signOut(() => router.push('/'))}>
             Log Out
-          </Button>
+          </Button> 
+          <div className="flex items-center text-slate-400 mt-4">
+            <Link href="https://github.com/Rishabh-Agarwal9/vocalnest" target="_blank" rel="noopener noreferrer" className="mr-2">
+              <Image src="/icons/github.svg" width={20} height={20} alt="Github" />
+            </Link>
+            <span>Made by Rishabh</span>
+          </div>
         </div>
       </SignedIn>
     </section>
   )
 }
-
+ 
 export default LeftSidebar
