@@ -87,7 +87,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
     <div>
       <div className="flex flex-col gap-2.5">
         <Label className="text-16 font-bold text-white-1">
-          AI Prompt to generate Podcast
+          Text to convert to AI audio
         </Label>
         <Textarea 
           maxLength={4000}
