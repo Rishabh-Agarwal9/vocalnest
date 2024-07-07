@@ -69,6 +69,7 @@ const ProfileCard = ({
             width={24}
             height={24}
             alt="headphones"
+            aria-label="headphones"
           />
           <h2 className="text-16 font-semibold text-white-1">
             {podcastData?.listeners} &nbsp;

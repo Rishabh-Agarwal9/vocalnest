@@ -34,6 +34,7 @@ const PodcastDetails = ({ params: { podcastId } }: { params: { podcastId: Id<'po
             width={24}
             height={24}
             alt="headphone"
+            aria-label="headphones"
           />
           <h2 className="text-16 font-bold text-white-1">{podcast?.views}</h2>
         </figure>
