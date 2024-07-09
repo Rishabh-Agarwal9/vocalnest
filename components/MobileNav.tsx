@@ -6,7 +6,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { SignedIn, SignedOut, useClerk } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useClerk, useUser } from '@clerk/nextjs';
 import { sidebarLinks } from "@/constants"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -20,6 +20,7 @@ const MobileNav = () => {
   const pathname = usePathname();
   const { signOut } = useClerk();
   const router = useRouter();
+  const { user } = useUser();
 
 
   return (
@@ -39,12 +40,25 @@ const MobileNav = () => {
               {sidebarLinks.map(({ route, label, imgURL }) => {
                 const isActive = pathname === route || pathname.startsWith(`${route}/`);
 
-                return <SheetClose asChild key={route}><Link href={route} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-start", {
-                  'bg-nav-focus border-r-4 border-orange-1': isActive
-                })}>
-                  <Image src={imgURL} alt={label} width={24} height={24} />
-                  <p>{label}</p>
-                </Link></SheetClose>
+                if(label==="Your Profile"){
+                  return <SignedIn key ={label}>
+                      <SheetClose asChild key={route}><Link href={`${route}/${user?.id}`} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-start", {
+                    'bg-nav-focus border-r-4 border-orange-1': isActive
+                  })}>
+                    <Image src={imgURL} alt={label} width={24} height={24} />
+                    <p>{label}</p>
+                  </Link></SheetClose>
+                  </SignedIn>
+                    
+                } 
+                else{
+                  return <SheetClose asChild key={route}><Link href={route} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-start", {
+                    'bg-nav-focus border-r-4 border-orange-1': isActive
+                  })}>
+                    <Image src={imgURL} alt={label} width={24} height={24} />
+                    <p>{label}</p>
+                  </Link></SheetClose>
+                }
               })}
               <SignedOut>
               <div className="flex-center flex-col w-full pb-14 max-lg:px-4 lg:pr-8">
