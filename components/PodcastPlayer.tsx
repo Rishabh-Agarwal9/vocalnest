@@ -17,6 +17,12 @@ const PodcastPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const { audio } = useAudio();
 
+  const removePlayer=()=>{
+    togglePlayPause();
+    if(audio)
+      audio.audioUrl="";
+  }
+
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
       audioRef.current?.play();
@@ -129,12 +135,13 @@ const PodcastPlayer = () => {
             </h2>
             <p className="text-12 font-normal text-white-2">{audio?.author}</p>
           </div>
-          <div>
+          <div className="cursor-pointer">
             <Image
               src={"/icons/cross.svg"}
               width={24}
               height={24}
               alt="close"
+              onClick ={removePlayer}
             />
           </div>
         </div>
