@@ -114,7 +114,7 @@ const PodcastPlayer = () => {
           onEnded={handleAudioEnded}
         />
         <div className="flex items-center gap-4 max-md:hidden">
-          <Link href={`/podcast/${audio?.podcastId}`}>
+          <Link href={`/podcasts/${audio?.podcastId}`}>
             <Image
               src={audio?.imageUrl! || "/images/player1.png"}
               width={64}
@@ -128,6 +128,14 @@ const PodcastPlayer = () => {
               {audio?.title}
             </h2>
             <p className="text-12 font-normal text-white-2">{audio?.author}</p>
+          </div>
+          <div>
+            <Image
+              src={"/icons/cross.svg"}
+              width={24}
+              height={24}
+              alt="close"
+            />
           </div>
         </div>
         <div className="flex-center cursor-pointer gap-3 md:gap-6">
