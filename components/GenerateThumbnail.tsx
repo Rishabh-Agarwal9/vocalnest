@@ -159,7 +159,7 @@ const GenerateThumbnail = ({ setImage, setImageStorageId, image, imagePrompt, se
            <h2 className="text-12 font-bold text-orange-1">
             Click to upload
             </h2>
-            <p className="text-12 font-normal text-gray-1">SVG, PNG, JPG, or GIF (max. 1080x1080px)</p> 
+            <p className="text-12 font-normal text-gray-1">SVG, PNG, JPG, or GIF (max. 1080x1080px, add square image for best result)</p> 
           </div>
         </div>
       )}
